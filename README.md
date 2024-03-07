@@ -42,3 +42,8 @@ The requirements can be found in the REQUIREMENTS.md.
 (2, 'installed', 'boolean', 0, None, 0)
 ```
 
+## API
+- Initial interation will be in NodeJS as for me it is the 
+fastest to iterate with rather than other faster languages.
+Will try to switch CPU intensive parts to efficient languages later.
+
