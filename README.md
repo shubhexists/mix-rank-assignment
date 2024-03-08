@@ -50,3 +50,6 @@ I am using the `actix-web` framework to build web server.
 
 - Currently thinking of making 2 api routes, one to give out
 the churns between SDKs and other to give out the examples
+
+- Tried using static types for quite some time but because of variable data formats
+it is resulting in not compiling of the code, hence not using static types for this implementation

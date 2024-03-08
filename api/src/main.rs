@@ -1,13 +1,9 @@
+use std::io;
+
 use actix_web::{web, App, HttpServer};
 use routes::{churns, examples};
-#[macro_use]
-extern crate diesel;
-use std::io;
-mod db_queries;
-mod routes;
-mod schema;
-mod types;
 
+mod routes;
 #[actix_web::main]
 async fn main() -> io::Result<()> {
     HttpServer::new(|| {
