@@ -1,11 +1,13 @@
+# THIS IS JUST A SAMPLE FILE USED FOR VISUALIZATION AND TESTING QUERIES
+# THIS FILE IS NOT USED IN THE APPLICATION
+
 import sqlite3
 
 def read_database(file_path):
     try:
         connection = sqlite3.connect(file_path)
         cursor = connection.cursor()
-        query = """PRAGMA table_info(app);
-"""
+        query = """PRAGMA table_info(app);"""
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:

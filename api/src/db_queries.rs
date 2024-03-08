@@ -40,8 +40,7 @@ pub fn from_slug_a_to_slug_b(slugs: Vec<String>) -> Result<Vec<Response>> {
     let conn: Connection = Connection::open("./database/data.db")?;
     let query: String = format!(
         "
-    SELECT app_sdk_1.*, app_sdk_2.*, sdk1.*, sdk2.*, COUNT(DISTINCT app_sdk_1.app_id)
-    AS count_1 
+    SELECT sdk1.slug, sdk2.slug, COUNT(DISTINCT app_sdk_1.app_id)
     FROM app_sdk AS app_sdk_1, app_sdk AS app_sdk_2, sdk AS sdk1, sdk AS sdk2 
     WHERE app_sdk_1.app_id = app_sdk_2.app_id AND app_sdk_1.sdk_id = sdk1.id 
     AND app_sdk_2.sdk_id = sdk2.id AND app_sdk_1.installed = 0 
@@ -55,9 +54,9 @@ pub fn from_slug_a_to_slug_b(slugs: Vec<String>) -> Result<Vec<Response>> {
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut response_vec: Vec<Response> = Vec::new();
     while let Some(row) = rows.next()? {
-        let name2: String = row.get(8)?;
-        let name6: String = row.get(13)?;
-        let id9: i32 = row.get(16)?;
+        let name2: String = row.get(0)?;
+        let name6: String = row.get(1)?;
+        let id9: i32 = row.get(2)?;
         response_vec.push(Response {
             from_sdk: name2,
             to_sdk: name6,
@@ -76,7 +75,7 @@ pub fn from_none_to_slug(slugs: Vec<String>) -> Result<Vec<Response>> {
         .join(",");
     let query: String = format!(
         "
-    SELECT app_sdk_1.*, app_sdk_2.*, sdk1.*, sdk2.*, COUNT(DISTINCT app_sdk_1.app_id) AS count_1
+    SELECT sdk2.slug, COUNT(DISTINCT app_sdk_1.app_id)
     FROM app_sdk AS app_sdk_1, app_sdk AS app_sdk_2, sdk AS sdk1, sdk AS sdk2
     WHERE app_sdk_1.app_id = app_sdk_2.app_id
     AND app_sdk_1.sdk_id = sdk1.id
@@ -93,8 +92,8 @@ pub fn from_none_to_slug(slugs: Vec<String>) -> Result<Vec<Response>> {
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut response_vec: Vec<Response> = Vec::new();
     while let Some(row) = rows.next()? {
-        let name6: String = row.get(13)?;
-        let id9: i32 = row.get(16)?;
+        let name6: String = row.get(0)?;
+        let id9: i32 = row.get(1)?;
         response_vec.push(Response {
             from_sdk: "None".to_string(),
             to_sdk: name6,
@@ -113,7 +112,7 @@ pub fn from_slug_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
         .join(",");
     let query: String = format!(
         "
-    SELECT app_sdk_1.*, app_sdk_2.*, sdk1.*, sdk2.*, COUNT(DISTINCT app_sdk_1.app_id) AS count_1
+    SELECT sdk1.slug, COUNT(DISTINCT app_sdk_1.app_id)
     FROM app_sdk AS app_sdk_1, app_sdk AS app_sdk_2, sdk AS sdk1, sdk AS sdk2
     WHERE app_sdk_1.app_id = app_sdk_2.app_id
     AND app_sdk_1.sdk_id = sdk1.id
@@ -130,8 +129,8 @@ pub fn from_slug_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut response_vec: Vec<Response> = Vec::new();
     while let Some(row) = rows.next()? {
-        let name2: String = row.get(8)?;
-        let id9: i32 = row.get(16)?;
+        let name2: String = row.get(0)?;
+        let id9: i32 = row.get(1)?;
         response_vec.push(Response {
             from_sdk: name2,
             to_sdk: "None".to_string(),
@@ -150,7 +149,7 @@ pub fn from_slug_to_itself(slugs: Vec<String>) -> Result<Vec<Response>> {
         .join(",");
     let query: String = format!(
         "
-    SELECT COUNT(DISTINCT app_sdk.app_id) AS count_1, app_sdk.*, sdk.*
+    SELECT sdk.slug, COUNT(DISTINCT app_sdk.app_id)
     FROM app_sdk, sdk
     WHERE app_sdk.sdk_id = sdk.id
     AND app_sdk.installed = true
@@ -163,8 +162,8 @@ pub fn from_slug_to_itself(slugs: Vec<String>) -> Result<Vec<Response>> {
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut response_vec: Vec<Response> = Vec::new();
     while let Some(row) = rows.next()? {
-        let name2: String = row.get(6)?;
-        let id9: i32 = row.get(0)?;
+        let name2: String = row.get(0)?;
+        let id9: i32 = row.get(1)?;
         response_vec.push(Response {
             from_sdk: name2.clone(),
             to_sdk: name2,
@@ -183,7 +182,7 @@ pub fn from_none_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
         .join(",");
     let query: String = format!(
         "
-    SELECT COUNT(app.id) AS count_1
+    SELECT COUNT(app.id)
     FROM app
     WHERE NOT EXISTS (
     SELECT 1 FROM app_sdk, sdk
@@ -209,9 +208,9 @@ pub fn from_none_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
 }
 
 pub fn examples_from_slug_a_to_slug_b(slug_1: String, slug_2: String) -> Result<ExampleResponse> {
-    let conn = Connection::open("./database/data.db")?;
-    let query = format!(
-        "SELECT app_sdk_1.*, app_sdk_2.*, Sdk1.*, Sdk2.*, App.*
+    let conn: Connection = Connection::open("./database/data.db")?;
+    let query: String = format!(
+        "SELECT App.id, App.name
         FROM app_sdk AS app_sdk_1
         JOIN app_sdk AS app_sdk_2 ON app_sdk_1.app_id = app_sdk_2.app_id
         JOIN sdk AS Sdk1 ON app_sdk_1.sdk_id = Sdk1.id
@@ -229,8 +228,8 @@ pub fn examples_from_slug_a_to_slug_b(slug_1: String, slug_2: String) -> Result<
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut example_vec: Vec<Example> = Vec::new();
     while let Some(row) = rows.next()? {
-        let example_id: i32 = row.get(16)?;
-        let example_name: String = row.get(17)?;
+        let example_id: i32 = row.get(0)?;
+        let example_name: String = row.get(1)?;
         example_vec.push(Example {
             id: example_id,
             name: example_name,
@@ -253,8 +252,8 @@ pub fn examples_from_none_to_slug(
         .collect::<Vec<String>>()
         .join(",");
     let conn: Connection = Connection::open("./database/data.db")?;
-    let query = format!(
-        "SELECT app_sdk_1.*, app_sdk_2.*, Sdk1.*, Sdk2.*, App.*
+    let query: String = format!(
+        "SELECT App.id, App.name
         FROM app_sdk AS app_sdk_1
         JOIN app_sdk AS app_sdk_2 ON app_sdk_1.app_id = app_sdk_2.app_id
         JOIN sdk AS Sdk1 ON app_sdk_1.sdk_id = Sdk1.id
@@ -272,8 +271,8 @@ pub fn examples_from_none_to_slug(
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut example_vec: Vec<Example> = Vec::new();
     while let Some(row) = rows.next()? {
-        let example_id: i32 = row.get(16)?;
-        let name: String = row.get(17)?;
+        let example_id: i32 = row.get(0)?;
+        let name: String = row.get(1)?;
         example_vec.push(Example {
             id: example_id,
             name,
@@ -296,8 +295,8 @@ pub fn examples_from_slug_to_none(
         .collect::<Vec<String>>()
         .join(",");
     let conn: Connection = Connection::open("./database/data.db")?;
-    let query = format!(
-        "SELECT app_sdk_1.*, app_sdk_2.*, Sdk1.*, Sdk2.*, App.*
+    let query: String = format!(
+        "SELECT App.id, App.name
         FROM app_sdk AS app_sdk_1
         JOIN app_sdk AS app_sdk_2 ON app_sdk_1.app_id = app_sdk_2.app_id
         JOIN sdk AS Sdk1 ON app_sdk_1.sdk_id = Sdk1.id
@@ -315,8 +314,8 @@ pub fn examples_from_slug_to_none(
     let mut rows: Rows<'_> = stmt.query(params![])?;
     let mut example_vec: Vec<Example> = Vec::new();
     while let Some(row) = rows.next()? {
-        let example_id: i32 = row.get(16)?;
-        let name: String = row.get(17)?;
+        let example_id: i32 = row.get(0)?;
+        let name: String = row.get(1)?;
         example_vec.push(Example {
             id: example_id,
             name,
@@ -332,7 +331,7 @@ pub fn examples_from_slug_to_none(
 pub fn examples_from_slug_to_itself(slug: String) -> Result<ExampleResponse> {
     let conn: Connection = Connection::open("./database/data.db")?;
     let query: String = format!(
-        "SELECT app_sdk.*, sdk.*, app.*
+        "SELECT App.id, App.name
         FROM app_sdk
         JOIN sdk ON app_sdk.sdk_id = sdk.id
         JOIN app ON app_sdk.app_id = app.id
@@ -347,7 +346,7 @@ pub fn examples_from_slug_to_itself(slug: String) -> Result<ExampleResponse> {
     let mut example_vec: Vec<Example> = Vec::new();
     while let Some(row) = rows.next()? {
         let example_id: i32 = row.get(0)?;
-        let name: String = row.get(9)?;
+        let name: String = row.get(1)?;
         example_vec.push(Example {
             id: example_id,
             name,
@@ -361,14 +360,14 @@ pub fn examples_from_slug_to_itself(slug: String) -> Result<ExampleResponse> {
 }
 
 pub fn examples_from_none_to_none(available_slugs: Vec<String>) -> Result<ExampleResponse> {
-    let st = available_slugs
+    let st: String = available_slugs
         .iter()
         .map(|s| format!("'{}'", s))
         .collect::<Vec<String>>()
         .join(",");
     let conn: Connection = Connection::open("./database/data.db")?;
-    let query = format!(
-        "SELECT app.*
+    let query: String = format!(
+        "SELECT App.id, App.name
         FROM app
         WHERE NOT EXISTS (
             SELECT 1
@@ -379,7 +378,6 @@ pub fn examples_from_none_to_none(available_slugs: Vec<String>) -> Result<Exampl
               AND app_sdk.app_id = app.id
         )
         LIMIT 10;
-          
         ",
         st
     );
