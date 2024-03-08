@@ -4,22 +4,8 @@ def read_database(file_path):
     try:
         connection = sqlite3.connect(file_path)
         cursor = connection.cursor()
-        query = """SELECT
-    COUNT(app.id) AS count_1
-FROM
-    app
-WHERE
-    NOT EXISTS (
-        SELECT
-            1
-        FROM
-            app_sdk, sdk
-        WHERE
-            app_sdk.sdk_id = sdk.id
-            AND sdk.slug IN ('stripe')
-            AND app_sdk.installed = 1
-            AND app_sdk.app_id = app.id
-    );"""
+        query = """PRAGMA table_info(app);
+"""
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:
@@ -30,7 +16,7 @@ WHERE
         if connection:
             connection.close()
 
-read_database('./database/data.db')
+read_database('./api/database/data.db')
 
 # SELECT * from app_sdk WHERE app_id = 735945527;
 # SELECT * from app_sdk WHERE sdk_id = 18;
