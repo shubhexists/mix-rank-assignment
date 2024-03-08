@@ -1,12 +1,12 @@
 use diesel::Queryable;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Queryable, Serialize)]
+#[derive(Debug, Serialize, Deserialize, Queryable)]
 pub struct App {
     id: i32,
     name: String,
     company_url: String,
-    release_date: String,
+    release_date: Option<String>,
     genre_id: i32,
     artwork_large_url: String,
     seller_name: String,
@@ -17,16 +17,16 @@ pub struct App {
     one_star_ratings: i32,
 }
 
-#[derive(Debug, Queryable, Serialize)]
+#[derive(Debug, Serialize, Deserialize, Queryable)]
 pub struct Sdk {
-    id: i32,
-    name: String,
-    slug: String,
-    url: String,
-    description: String,
+    pub id: i32,
+    pub name: String,
+    pub slug: String,
+    pub url: Option<String>,
+    pub description: Option<String>,
 }
 
-#[derive(Debug, Queryable, Serialize)]
+#[derive(Debug, Serialize, Deserialize, Queryable)]
 pub struct AppSdk {
     app_id: i32,
     sdk_id: i32,

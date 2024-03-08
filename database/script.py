@@ -4,7 +4,7 @@ def read_database(file_path):
     try:
         connection = sqlite3.connect(file_path)
         cursor = connection.cursor()
-        query = "SELECT * FROM sdk;"
+        query = "SELECT * FROM app;"
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:
