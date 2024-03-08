@@ -43,7 +43,10 @@ The requirements can be found in the REQUIREMENTS.md.
 ```
 
 ## API
-- Initial interation will be in NodeJS as for me it is the 
-fastest to iterate with rather than other faster languages.
-Will try to switch CPU intensive parts to efficient languages later.
+- Trying to implement initial implementation all in Rust.
+My choice of Rust is just based on my experience in Rust and 
+it's ability to build performant web servers.
+I am using the `actix-web` framework to build web server.
 
+- Currently thinking of making 2 api routes, one to give out
+the churns between SDKs and other to give out the examples
