@@ -1,9 +1,9 @@
-use std::io;
-
 use actix_web::{web, App, HttpServer};
 use routes::{churns, examples};
-
+use std::io;
+mod db_queries;
 mod routes;
+
 #[actix_web::main]
 async fn main() -> io::Result<()> {
     HttpServer::new(|| {

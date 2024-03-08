@@ -4,20 +4,22 @@ def read_database(file_path):
     try:
         connection = sqlite3.connect(file_path)
         cursor = connection.cursor()
-        query = """SELECT 
-            t1.*, t2.*, sdk1.*, sdk2.*, COUNT(DISTINCT t1.app_id) AS count_1
-        FROM 
-            app_sdk AS t1, app_sdk AS t2, sdk AS sdk1, sdk AS sdk2
-        WHERE 
-            t1.app_id = t2.app_id
-            AND t1.sdk_id = sdk1.id
-            AND t2.sdk_id = sdk2.id
-            AND t1.installed = 0
-            AND t2.installed = 1
-            AND sdk1.slug IN ('stripe', 'paypal', 'alipay')
-            AND sdk2.slug IN ('stripe', 'paypal', 'alipay')
-        GROUP BY 
-            sdk1.id, sdk2.id;"""
+        query = """SELECT
+    COUNT(app.id) AS count_1
+FROM
+    app
+WHERE
+    NOT EXISTS (
+        SELECT
+            1
+        FROM
+            app_sdk, sdk
+        WHERE
+            app_sdk.sdk_id = sdk.id
+            AND sdk.slug IN ('stripe')
+            AND app_sdk.installed = 1
+            AND app_sdk.app_id = app.id
+    );"""
         cursor.execute(query)
         rows = cursor.fetchall()
         for row in rows:

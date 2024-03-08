@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 rusqlite = "0.26.0"
 actix-web = "4"
+serde = { version = "1", features = ["derive"] }
