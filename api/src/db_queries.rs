@@ -1,7 +1,7 @@
 use rusqlite::{params, Connection, Result};
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Response {
     pub from_sdk: String,
     pub to_sdk: String,
@@ -14,7 +14,7 @@ pub fn slug_a_to_slug_b(slugs: Vec<String>) -> Result<Vec<Response>> {
         .map(|s| format!("'{}'", s))
         .collect::<Vec<String>>()
         .join(",");
-    let conn = Connection::open("data.db")?;
+    let conn = Connection::open("./database/data.db")?;
     let query = format!(
         "
     SELECT app_sdk_1.*, app_sdk_2.*, sdk1.*, sdk2.*, COUNT(DISTINCT app_sdk_1.app_id)
@@ -45,7 +45,7 @@ pub fn slug_a_to_slug_b(slugs: Vec<String>) -> Result<Vec<Response>> {
 }
 
 pub fn from_none_to_slug(slugs: Vec<String>) -> Result<Vec<Response>> {
-    let conn = Connection::open("data.db")?;
+    let conn = Connection::open("./database/data.db")?;
     let st = slugs
         .iter()
         .map(|s| format!("'{}'", s))
@@ -82,7 +82,7 @@ pub fn from_none_to_slug(slugs: Vec<String>) -> Result<Vec<Response>> {
 }
 
 pub fn from_slug_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
-    let conn = Connection::open("data.db")?;
+    let conn = Connection::open("./database/data.db")?;
     let st = slugs
         .iter()
         .map(|s| format!("'{}'", s))
@@ -119,7 +119,7 @@ pub fn from_slug_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
 }
 
 pub fn from_slug_to_itself(slugs: Vec<String>) -> Result<Vec<Response>> {
-    let conn = Connection::open("data.db")?;
+    let conn = Connection::open("./database/data.db")?;
     let st = slugs
         .iter()
         .map(|s| format!("'{}'", s))
@@ -152,7 +152,7 @@ pub fn from_slug_to_itself(slugs: Vec<String>) -> Result<Vec<Response>> {
 }
 
 pub fn from_none_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
-    let conn = Connection::open("data.db")?;
+    let conn = Connection::open("./database/data.db")?;
     let st = slugs
         .iter()
         .map(|s| format!("'{}'", s))
