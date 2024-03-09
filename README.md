@@ -67,6 +67,8 @@ table that is quite similar to that image would be much more convenient. It stil
 - All my interactions with ChatGPT for this assignment are recorded in 
    https://chat.openai.com/share/6ff35006-62f2-4af8-8ec5-990cfc824e31
 
+- Some of the TailwindCSS elements are taken from https://v0.dev/r/4TWhlqGS2DX
+
 - I did not had prior experience of nix and the `default.nix` file provided had python setup.
 Hence, I could not set-up nix. So for now I'll link the setup 
 instructions below. I'll be adding Nix in the next couple of days after I get an understanding of it.

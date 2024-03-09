@@ -89,6 +89,14 @@ const NormMatrix = ({ data }) => {
       });
   };
 
+  const get_text_color = (number) => {
+    if (number > 81) {
+      return "text-white";
+    } else {
+      return "text-gray-900";
+    }
+  }
+
   return (
     <div className="flex">
       <div>
@@ -116,7 +124,9 @@ const NormMatrix = ({ data }) => {
                     )}`}
                     onClick={() => handleClick(fromSdk, toSdk)}
                   >
-                    <div className="flex justify-center items-center">
+                    <div className={`flex justify-center items-center ${get_text_color(
+                      normalizedData[rowIndex][colIndex]
+                    )}`}>
                       {normalizedData[rowIndex][colIndex] + "%"}
                     </div>
                   </td>

@@ -30,7 +30,6 @@ const Matrix = ({ data }) => {
     return match ? match.number : 0;
   };
 
-  // Improve this colour logic
   const getBackgroundColor = (number) => {
     const colorRanges = [
       { min: 0, max: 10, color: "bg-red-100" },
@@ -76,6 +75,14 @@ const Matrix = ({ data }) => {
       });
   };
 
+  const get_text_color = (number) => {
+    if (number > 801) {
+      return "text-white";
+    } else {
+      return "text-gray-900";
+    }
+  };
+
   return (
     <div className="flex">
       <div>
@@ -103,7 +110,11 @@ const Matrix = ({ data }) => {
                     )}`}
                     onClick={() => handleClick(fromSdk, toSdk)}
                   >
-                    <div className="flex justify-center items-center">
+                    <div
+                      className={`flex justify-center items-center ${get_text_color(
+                        findNumber(fromSdk.slug, toSdk.slug)
+                      )}`}
+                    >
                       {findNumber(fromSdk.slug, toSdk.slug)}
                     </div>
                   </td>

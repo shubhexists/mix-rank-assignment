@@ -32,7 +32,10 @@ export default function Home() {
 
   return (
     <div>
-      <div className="flex gap-10 flex-wrap ml-6 mr-3">
+      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Choose SDKs
+      </h2>
+      <div className="grid grid-cols-2 gap-4 p-6 rounded-lg border border-gray-200 items-start ml-10 mr-10">
         {sdks.map((d) => (
           <div key={d.id}>
             <div className="flex gap-2">
@@ -48,7 +51,13 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Competitive Matrix
+      </h2>
       <Matrix data={checkedSdks} />
+      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Normalized (Row) Matrix
+      </h2>
       <NormMatrix data={checkedSdks} />
     </div>
   );
@@ -63,7 +72,7 @@ const Checkbox = ({ id, label, slug, onCheckboxChange }) => {
   };
 
   return (
-    <label className="flex gap-2">
+    <label className="flex items-center space-x-2">
       <input
         type="checkbox"
         checked={isChecked}
