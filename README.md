@@ -7,7 +7,7 @@ The requirements can be found in the REQUIREMENTS.md.
     1) `app` - It consists of the applications we need to crawl 
     2) `sdk` - List of SDKs we need to check for each Application
     3) `app_sdk` - It has a list of `sdk_id` and `app_id` that is actually used in the application.
-
+  
 ## STRUCTURE
 
 `app` -
@@ -54,3 +54,52 @@ the churns between SDKs and other to give out the examples
 
 - Tried using static types for quite some time but because of variable data formats
 it is resulting in not compiling of the code, hence not using static types for this implementation
+
+## CLIENT
+- Client application is in NextJS. Initial though was I could use ShadCN library for a better UI
+but that would add the complexity of the client code hence decided to not use ShadCN, continued with
+NextJS though
+
+- The Instructions talked about displaying an image. From what I could think of, I found displaying the 
+table that is quite similar to that image would be much more convenient. It still looks the same.
+ 
+# IMPORTANT POINTS 
+- All my interactions with ChatGPT for this assignment are recorded in 
+   https://chat.openai.com/share/6ff35006-62f2-4af8-8ec5-990cfc824e31
+
+- I did not had prior experience of nix and the `default.nix` file provided had python setup.
+Hence, I could not set-up nix. So for now I'll link the setup 
+instructions below. I'll be adding Nix in the next couple of days after I get an understanding of it.
+
+# SET-UP
+You need Rust/ Cargo installed in your machine for running the backend. https://www.rust-lang.org/tools/install 
+
+
+You would also need Node installed for setting up the client. 
+
+1) Clone the git repo 
+```
+git clone https://github.com/shubhexists/mix-rank-assignment 
+```
+2) Navigate to the project and then the `api` Directory to build/run the Rust backend - 
+```
+cd mix-rank-assignment/api 
+
+cargo run
+```
+This will export the backend routes on port 8080.
+
+3) Now navigate to the client directory and download the dependencies.
+```
+cd ../client
+
+npm install
+```
+
+4) Now start the client
+```
+npm run dev
+```
+This will start the client application on port 3000.
+
+# That's IT. THANK YOU
