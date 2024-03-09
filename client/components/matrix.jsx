@@ -33,10 +33,10 @@ const Matrix = ({ data }) => {
   // Improve this colour logic
   const getBackgroundColor = (number) => {
     const colorRanges = [
-      { min: 0, max: 100, color: "bg-red-100" },
-      { min: 101, max: 200, color: "bg-red-200" },
-      { min: 201, max: 300, color: "bg-red-300" },
-      { min: 301, max: 400, color: "bg-red-400" },
+      { min: 0, max: 10, color: "bg-red-100" },
+      { min: 11, max: 50, color: "bg-red-200" },
+      { min: 51, max: 100, color: "bg-red-300" },
+      { min: 101, max: 400, color: "bg-red-400" },
       { min: 401, max: 600, color: "bg-red-500" },
       { min: 601, max: 700, color: "bg-red-600" },
       { min: 701, max: 800, color: "bg-red-700" },
@@ -51,10 +51,7 @@ const Matrix = ({ data }) => {
 
   const handleClick = (from_sdk, to_sdk) => {
     const slugs = data.map((d) => d.slug);
-    console.log(slugs);
-    console.log(from_sdk.slug);
-    console.log(to_sdk.slug);
-
+    setExamples([]);
     fetch("http://localhost:8080/examples", {
       method: "POST",
       headers: {
@@ -68,8 +65,11 @@ const Matrix = ({ data }) => {
     })
       .then((res) => res.json())
       .then((d) => {
-        setExamples(d["examples"]);
-        console.log(examples);
+        let ExamplesSet = new Set(
+          d["examples"].map((item) => JSON.stringify(item))
+        );
+        let Examples = Array.from(ExamplesSet).map((item) => JSON.parse(item));
+        setExamples(Examples);
       })
       .catch((err) => {
         console.error(err);

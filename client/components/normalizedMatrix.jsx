@@ -57,16 +57,14 @@ const NormMatrix = ({ data }) => {
     return extendedData.map((toSdk) => {
       const originalValue = findNumber(fromSdk.slug, toSdk.slug);
       const normalizedValue = rowSum !== 0 ? originalValue / rowSum : 0;
-      return Number(normalizedValue.toFixed(2));
+      const roundedValue = Math.round(normalizedValue * 100);
+      return roundedValue;
     });
   });
 
   const handleClick = (from_sdk, to_sdk) => {
     const slugs = data.map((d) => d.slug);
-    console.log(slugs);
-    console.log(from_sdk.slug);
-    console.log(to_sdk.slug);
-
+    setExamples([]);
     fetch("http://localhost:8080/examples", {
       method: "POST",
       headers: {
@@ -80,8 +78,11 @@ const NormMatrix = ({ data }) => {
     })
       .then((res) => res.json())
       .then((d) => {
-        setExamples(d["examples"]);
-        console.log(examples);
+        let ExamplesSet = new Set(
+          d["examples"].map((item) => JSON.stringify(item))
+        );
+        let Examples = Array.from(ExamplesSet).map((item) => JSON.parse(item));
+        setExamples(Examples);
       })
       .catch((err) => {
         console.error(err);
@@ -111,12 +112,12 @@ const NormMatrix = ({ data }) => {
                   <td
                     key={toSdk.id}
                     className={`w-16 h-16 ${getBackgroundColor(
-                      normalizedData[rowIndex][colIndex] * 100
+                      normalizedData[rowIndex][colIndex]
                     )}`}
                     onClick={() => handleClick(fromSdk, toSdk)}
                   >
                     <div className="flex justify-center items-center">
-                      {normalizedData[rowIndex][colIndex] * 100 + "%"}
+                      {normalizedData[rowIndex][colIndex] + "%"}
                     </div>
                   </td>
                 ))}
