@@ -31,6 +31,13 @@ pub struct Example {
     pub name: String,
 }
 
+#[derive(Deserialize, Serialize, Clone)]
+pub struct Sdk {
+    pub id: i32,
+    pub name: String,
+    pub slug: String,
+}
+
 pub fn from_slug_a_to_slug_b(slugs: Vec<String>) -> Result<Vec<Response>> {
     let st: String = slugs
         .iter()
@@ -397,4 +404,19 @@ pub fn examples_from_none_to_none(available_slugs: Vec<String>) -> Result<Exampl
         to_sdk: "None".to_string(),
         examples: example_vec,
     })
+}
+
+pub fn get_all_sdks() -> Result<Vec<Sdk>> {
+    let conn: Connection = Connection::open("./database/data.db")?;
+    let query: &str = "SELECT id, name, slug from sdk";
+    let mut stmt: Statement<'_> = conn.prepare(&query)?;
+    let mut rows: Rows<'_> = stmt.query(params![])?;
+    let mut sdk_vec: Vec<Sdk> = Vec::new();
+    while let Some(row) = rows.next()? {
+        let id: i32 = row.get(0)?;
+        let name: String = row.get(1)?;
+        let slug: String = row.get(2)?;
+        sdk_vec.push(Sdk { id, name, slug })
+    }
+    Ok(sdk_vec)
 }

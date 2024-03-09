@@ -1,7 +1,7 @@
 use actix_web::{web, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
-use crate::db_queries::{self, ExampleResponse, Response};
+use crate::db_queries::{self, get_all_sdks, ExampleResponse, Response};
 
 #[derive(Deserialize, Serialize)]
 pub struct Churns {
@@ -66,4 +66,9 @@ pub async fn examples(examples: web::Json<Examples>) -> impl Responder {
         }
     }
     HttpResponse::Ok().json(res)
+}
+
+pub async fn get_sdks() -> impl Responder {
+    let response: Vec<db_queries::Sdk> = get_all_sdks().unwrap();
+    HttpResponse::Ok().json(response)
 }

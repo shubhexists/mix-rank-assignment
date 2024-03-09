@@ -49,7 +49,8 @@ it's ability to build performant web servers.
 I am using the `actix-web` framework to build web server.
 
 - Currently thinking of making 2 api routes, one to give out
-the churns between SDKs and other to give out the examples
+the churns between SDKs and other to give out the examples 
+`ADDITION` - API Route added to fetch all the sdks on the client side
 
 - Tried using static types for quite some time but because of variable data formats
 it is resulting in not compiling of the code, hence not using static types for this implementation
