@@ -104,4 +104,7 @@ npm run dev
 ```
 This will start the client application on port 3000.
 
+### SETUP VIDEO 
+[Screencast from 10-03-24 04:11:02 AM IST.webm](https://github.com/shubhexists/mix-rank-assignment/assets/110319892/df0e41bc-3ca5-47ed-b722-1143d154c2a0)
+
 # That's IT. THANK YOU
