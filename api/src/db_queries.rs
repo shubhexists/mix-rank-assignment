@@ -87,8 +87,8 @@ pub fn from_none_to_slug(slugs: Vec<String>) -> Result<Vec<Response>> {
     WHERE app_sdk_1.app_id = app_sdk_2.app_id
     AND app_sdk_1.sdk_id = sdk1.id
     AND app_sdk_2.sdk_id = sdk2.id
-    AND app_sdk_1.installed = false
-    AND app_sdk_2.installed = true
+    AND app_sdk_1.installed = False
+    AND app_sdk_2.installed = True
     AND sdk1.slug NOT IN ({})
     AND sdk2.slug IN ({})
     GROUP BY
@@ -124,8 +124,8 @@ pub fn from_slug_to_none(slugs: Vec<String>) -> Result<Vec<Response>> {
     WHERE app_sdk_1.app_id = app_sdk_2.app_id
     AND app_sdk_1.sdk_id = sdk1.id
     AND app_sdk_2.sdk_id = sdk2.id
-    AND app_sdk_1.installed = true
-    AND app_sdk_2.installed = false
+    AND app_sdk_1.installed = True
+    AND app_sdk_2.installed = False
     AND sdk1.slug IN ({})
     AND sdk2.slug NOT IN ({})
     GROUP BY
