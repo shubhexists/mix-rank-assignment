@@ -3,6 +3,9 @@
 This README Section would contain a log of my thoughts of my approach of the problem.
 The requirements can be found in the REQUIREMENTS.md.
 
+## DEMO VIDEO (Matrix Screenshots attached at the end)
+[Screencast from 10-03-24 04:44:32 AM IST.webm](https://github.com/shubhexists/mix-rank-assignment/assets/110319892/14b7819a-61f7-478f-94eb-b62b0b880b38)
+
 ## UNDERSTANDING THE PROJECT
 
 - I went through the data in the `data.db` SQLite file. It had 3 tables -
